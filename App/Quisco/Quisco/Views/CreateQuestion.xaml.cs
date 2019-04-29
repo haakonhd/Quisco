@@ -51,13 +51,6 @@ namespace Quisco.Views
                 //TODO: Handle error: no category selected
             }
             //            quiz.Questions.Add(question);
-            /*
-             getting function
-             *             var result = await _httpClient.GetAsync(actorsBaseUri);
-                        var json = await result.Content.ReadAsStringAsync();
-                        var actors = JsonConvert.DeserializeObject<Actor[]>(json);
-
-             */
 
             var json = JsonConvert.SerializeObject(quiz);
 
@@ -66,11 +59,11 @@ namespace Quisco.Views
 
 
             json = await result.Content.ReadAsStringAsync();
-            var actors = JsonConvert.DeserializeObject<Quiz[]>(json);
+            var quizList = JsonConvert.DeserializeObject<Quiz[]>(json);
 
-            //            this.Frame.Navigate(typeof(CreateQuestion), quiz);
-            var dialog = new MessageDialog(actors.First() + " was added to Db. Sadly this is all the app can do for now.", "Quiz added");
+            var dialog = new MessageDialog(quizList.Last() + " was added to Db. Sadly this is all the app can do for now.", "Quiz added");
             await dialog.ShowAsync();
+            this.Frame.Navigate(typeof(MainPage));
 
         }
 
