@@ -18,13 +18,13 @@
             VerticalAlignment="Stretch"
             Background="LightGray"
             Opacity="0.3"
-        />
+        >
+        </Grid>
         <Grid
             HorizontalAlignment="Stretch"
             Margin="60,200,60,60"
             VerticalAlignment="Stretch">
-
-            <StackPanel Orientation="Vertical" Margin="20,0,0,0">
+            <StackPanel Orientation="Vertical" Margin="20,0,0,0" Width="600" HorizontalAlignment="Left">
                 <TextBlock
                     x:Name="QuizNameHeader" FontFamily="{StaticResource DefaultFont}" HorizontalAlignment="Left" FontSize="40" FontWeight="Bold"
                     Margin="0,20,0,0" Text="Create Quiz" TextWrapping="Wrap"/>
@@ -32,19 +32,25 @@
                    FontFamily="{StaticResource DefaultFont}" HorizontalAlignment="Left" FontSize="20" FontWeight="Bold"
                    Margin="20,30,0,0" Text="Question 1:" TextWrapping="Wrap"/>
                 <TextBox x:Name="QuestionTextInput" HorizontalAlignment="Left" Margin="20,20,0,0" PlaceholderText="Enter question here"  Padding="9,9,9,9" Width="500" Height="100"/>
-
-                <Button Height="30" Width="30" VerticalAlignment="Bottom" Padding="0" BorderThickness="0" Margin="20,30,0,0">
-                    <Grid>
-                        <Image Source="../Assets/button_green_bg.png" Stretch="UniformToFill"/>
-                        <TextBlock
-                            Text="+" FontFamily="{StaticResource DefaultFont}" FontWeight="Bold" FontSize="30"
-                            Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </Grid>
-                </Button>
+                <StackPanel Orientation="Horizontal">
+                    <Button Height="30" Width="30" VerticalAlignment="Bottom" Padding="0" BorderThickness="0" Margin="20,30,0,0">
+                        <Grid>
+                            <Image Source="../Assets/button_green_bg.png" Stretch="UniformToFill"/>
+                            <TextBlock
+                                Text="+" FontFamily="{StaticResource DefaultFont}" FontWeight="Bold" FontSize="30"
+                                Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                    </Button>
+                    <TextBlock
+                        FontFamily="{StaticResource DefaultFont}" HorizontalAlignment="Left" FontSize="20" FontWeight="Bold"
+                        Margin="20,30,0,0" Text="Add an answer:" TextWrapping="Wrap"/>
+                </StackPanel>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,0,30,30" HorizontalAlignment="Right">
+            <ListView Background="SlateGray"  Opacity="0.7" HorizontalAlignment="Right" Margin="0,30,30,0" Height="300" VerticalAlignment="Top" Width="339"/>
 
-                <Button Height="30" Width="60" VerticalAlignment="Bottom" Padding="0" BorderThickness="0" Margin="20,0,0,0">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Height="50" Margin="0,0,30,30" HorizontalAlignment="Right">
+
+                <Button Click="Clicked_Back" Height="30" Width="60" VerticalAlignment="Bottom" Padding="0" BorderThickness="0" Margin="20,0,0,0">
                     <Grid>
                         <Image Source="../Assets/button_grey_bg.png" Stretch="UniformToFill"/>
                         <TextBlock

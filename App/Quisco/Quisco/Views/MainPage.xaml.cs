@@ -13,6 +13,8 @@ namespace Quisco.Views
 {
     public sealed partial class MainPage : Page
     {
+        private Quiz quiz;
+
         public MainViewModel ViewModel { get; } = new MainViewModel();
 
         static Uri quizzesBaseUri = new Uri("http://localhost:53710/api/Quizzes");
@@ -27,7 +29,8 @@ namespace Quisco.Views
 
         private void Clicked_Create(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(CreateQuizNamePage));
+            Quiz quiz = new Quiz();
+            this.Frame.Navigate(typeof(CreateQuizNamePage), quiz);
         }
         private void Clicked_Take(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
@@ -36,7 +39,7 @@ namespace Quisco.Views
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            FillQuizList();
+//            FillQuizList();
         }
 
         public async Task<Quiz[]> GetQuizList()

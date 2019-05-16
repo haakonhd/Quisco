@@ -30,12 +30,12 @@
                 <TextBlock x:Name="EnterQuizNameTextBlock"
                    FontFamily="{StaticResource DefaultFont}" HorizontalAlignment="Left" FontSize="20" FontWeight="Bold"
                    Margin="20,30,0,0" Text="Enter quiz name:" TextWrapping="Wrap"/>
-                <TextBox x:Name="CreateQuizName" HorizontalAlignment="Left" Margin="20,20,0,0" PlaceholderText="Quiz name"  Padding="9,9,9,9" Width="500"/>
+                <TextBox x:Name="CreateQuizName" Text="{x:Bind QuizName}" HorizontalAlignment="Left" Margin="20,20,0,0" PlaceholderText="Quiz name"  Padding="9,9,9,9" Width="500"/>
 
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,0,30,30" HorizontalAlignment="Right">
 
-                <Button Height="40" Width="80" VerticalAlignment="Bottom" Padding="0" BorderThickness="0" Margin="20,0,0,0">
+                <Button Click="ClickedBack" Height="40" Width="80" VerticalAlignment="Bottom" Padding="0" BorderThickness="0" Margin="20,0,0,0">
                     <Grid>
                         <Image Source="../Assets/button_grey_bg.png" Stretch="UniformToFill"/>
                         <TextBlock
@@ -43,7 +43,7 @@
                             Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10"/>
                     </Grid>
                 </Button>
-                <Button Click="Clicked_next" Height="40" Width="120" VerticalAlignment="Bottom" Padding="0" BorderThickness="0" Margin="20,0,0,0">
+                <Button Click="ClickedNext" Height="40" Width="120" VerticalAlignment="Bottom" Padding="0" BorderThickness="0" Margin="20,0,0,0">
                     <Grid>
                         <Image Source="../Assets/button_green_bg.png" Stretch="UniformToFill"/>
                         <TextBlock 

@@ -66,6 +66,10 @@ namespace Quisco.Views
             this.Frame.Navigate(typeof(MainPage));
 
         }
+        private void Clicked_Back(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(CreateQuizCategory), quiz);
+        }
 
     }
 }

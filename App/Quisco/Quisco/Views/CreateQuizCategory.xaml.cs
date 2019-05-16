@@ -55,6 +55,10 @@ namespace Quisco.Views
             quiz.QuizCategory = quizCategory;
             this.Frame.Navigate(typeof(CreateQuestion), quiz);
         }
+        private void Clicked_Back(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(CreateQuizNamePage), quiz);
+        }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
