@@ -35,7 +35,7 @@
                 <StackPanel Orientation="Horizontal">
                     <Button Height="30" Width="30" VerticalAlignment="Bottom" Padding="0" BorderThickness="0" Margin="20,30,0,0">
                         <Grid>
-                            <Image Source="../Assets/button_green_bg.png" Stretch="UniformToFill"/>
+                            <Image Source="../../Assets/button_green_bg.png" Stretch="UniformToFill"/>
                             <TextBlock
                                 Text="+" FontFamily="{StaticResource DefaultFont}" FontWeight="Bold" FontSize="30"
                                 Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
@@ -52,7 +52,7 @@
 
                 <Button Click="Clicked_Back" Height="30" Width="60" VerticalAlignment="Bottom" Padding="0" BorderThickness="0" Margin="20,0,0,0">
                     <Grid>
-                        <Image Source="../Assets/button_grey_bg.png" Stretch="UniformToFill"/>
+                        <Image Source="../../Assets/button_grey_bg.png" Stretch="UniformToFill"/>
                         <TextBlock
                             Text="Back" FontFamily="{StaticResource DefaultFont}" FontWeight="Bold"
                             Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10"/>
@@ -60,7 +60,7 @@
                 </Button>
                 <Button Click="Clicked_Next" Height="30" Width="100" VerticalAlignment="Bottom" Padding="0" BorderThickness="0" Margin="20,0,0,0">
                     <Grid>
-                        <Image Source="../Assets/button_green_bg.png" Stretch="UniformToFill"/>
+                        <Image Source="../../Assets/button_green_bg.png" Stretch="UniformToFill"/>
                         <TextBlock
                                 Text="Next" FontFamily="{StaticResource DefaultFont}" FontWeight="Bold"
                                 Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10"/>
