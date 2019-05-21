@@ -53,6 +53,10 @@ namespace Quisco.Views
             }
 
             quiz.QuizCategory = quizCategory;
+            //set questionToBeHandled to 1 for the first time.
+            //If the user has clicked "back" from CreateQuestion it will have a set value and is not to be edited
+            if(quiz.QuestionToBeHandled == 0)
+                quiz.QuestionToBeHandled = 1;
             this.Frame.Navigate(typeof(CreateQuestion), quiz);
         }
         private void Clicked_Back(object sender, RoutedEventArgs e)

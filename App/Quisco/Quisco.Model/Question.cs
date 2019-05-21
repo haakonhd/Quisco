@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace Quisco.Model
 {
@@ -12,12 +13,9 @@ namespace Quisco.Model
 		[Required]
 		[StringLength(500)]
 		public string QuestionText { get; set; }
-		[Required]
-		public string Answer1 { get; set; }
-		[Required]
-		public string Answer2 { get; set; }
-		public string Answer3 { get; set; }
-		public string Answer4 { get; set; }
+
+		public IList<string> Answers { get; set;  } = new List<string>();
+
 		public Quiz AssociatedQuiz { get; set; }
 
 		public Question(){}
