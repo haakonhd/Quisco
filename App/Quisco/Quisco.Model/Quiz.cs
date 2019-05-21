@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Text;
 
 namespace Quisco.Model
@@ -17,8 +18,9 @@ namespace Quisco.Model
 		public string QuizName { get; set; }
 		[StringLength(20)]
 		public string QuizCategory { get; set; }
-
-		public ICollection<Question> Questions { get; } = new List<Question>();
+		[NotMapped]
+		public int QuestionToBeHandled { get; set; }
+		public IList<Question> Questions { get; set; } = new List<Question>();
 
 		public Quiz(){}
 
