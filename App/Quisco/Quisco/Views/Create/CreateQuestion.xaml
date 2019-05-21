@@ -24,49 +24,60 @@
             HorizontalAlignment="Stretch"
             Margin="60,200,60,60"
             VerticalAlignment="Stretch">
-            <StackPanel Orientation="Vertical" Margin="20,0,0,0" Width="600" HorizontalAlignment="Left">
+            <RelativePanel x:Name="LeftHalfRelativePanel" Margin="40,0,0,0" Width="600" HorizontalAlignment="Left">
                 <TextBlock
-                    x:Name="QuizNameHeader" FontFamily="{StaticResource DefaultFont}" HorizontalAlignment="Left" FontSize="40" FontWeight="Bold"
-                    Margin="0,20,0,0" Text="Create Quiz" TextWrapping="Wrap"/>
+                    x:Name="QuizNameHeader" FontFamily="{StaticResource DefaultFont}"  FontSize="40" FontWeight="Bold"
+                    Margin="-20,20,0,0" Text="Create Quiz" TextWrapping="Wrap"/>
+                
                 <TextBlock
-                   FontFamily="{StaticResource DefaultFont}" HorizontalAlignment="Left" FontSize="20" FontWeight="Bold"
-                   Margin="20,30,0,0" Text="Question 1:" TextWrapping="Wrap"/>
-                <TextBox x:Name="QuestionTextInput" HorizontalAlignment="Left" Margin="20,20,0,0" PlaceholderText="Enter question here"  Padding="9,9,9,9" Width="500" Height="100"/>
-                <StackPanel Orientation="Horizontal">
-                    <Button Height="30" Width="30" VerticalAlignment="Bottom" Padding="0" BorderThickness="0" Margin="20,30,0,0">
+                   x:Name="QuestionNumberTextBlock" FontFamily="{StaticResource DefaultFont}" RelativePanel.Below="QuizNameHeader" FontSize="20" FontWeight="Bold"
+                   Margin="0,30,0,0" Text="Question 1:" TextWrapping="Wrap" />
+                <TextBox x:Name="QuestionTextInput" RelativePanel.Below="QuestionNumberTextBlock"
+                         Margin="0,20,0,0" PlaceholderText="Enter question here"  Padding="9,9,9,9"
+                         RelativePanel.AlignHorizontalCenterWith="LeftHalfRelativePanel" Height="40"/>
+                <Grid RelativePanel.Below="QuestionTextInput" Margin="0,20,0,0"  >
+                <!-- <Grid RelativePanel.Below="QuestionTextInput" Margin="20,20,0,0" > -->
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="Answer1Input" Grid.Row="0" Grid.Column="0" PlaceholderText="Answer 1"  Padding="9,9,9,9" Height="40"/>
+                    <TextBox x:Name="Answer2Input" Grid.Row="0" Grid.Column="1" Margin="20,0,0,0" PlaceholderText="Answer 2"  Padding="9,9,9,9" Height="40"/>
+                    <TextBox x:Name="Answer3Input" Grid.Row="1" Grid.Column="0" Margin="0,20,0,0" PlaceholderText="Answer 3"  Padding="9,9,9,9" Height="40"/>
+                    <TextBox x:Name="Answer4Input" Grid.Row="1" Grid.Column="1" Margin="20,20,0,0" PlaceholderText="Answer 4"  Padding="9,9,9,9" Height="40"/>
+                    
+                </Grid>
+                <!--
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+
+                    <Button Click="GoBack"  Height="60" Width="60" VerticalAlignment="Bottom" Padding="0" BorderThickness="0">
+                    <Grid>
+                        <Image Source="../../Assets/button_grey_bg.png" Stretch="UniformToFill"/>
+                        <FontIcon Foreground="White"  FontFamily="Segoe MDL2 Assets" Glyph="&#xE72B;" FontSize="30" FontWeight="ExtraBold" />
+                    </Grid>
+                    </Button>
+                    <Button Click="AddAnswer"  Height="60" Width="60" VerticalAlignment="Bottom" Padding="0" BorderThickness="0" Margin="30,30,0,0">
                         <Grid>
                             <Image Source="../../Assets/button_green_bg.png" Stretch="UniformToFill"/>
                             <TextBlock
-                                Text="+" FontFamily="{StaticResource DefaultFont}" FontWeight="Bold" FontSize="30"
+                                Text="+" FontFamily="{StaticResource DefaultFont}" FontWeight="Bold" FontSize="50"
                                 Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Grid>
                     </Button>
-                    <TextBlock
-                        FontFamily="{StaticResource DefaultFont}" HorizontalAlignment="Left" FontSize="20" FontWeight="Bold"
-                        Margin="20,30,0,0" Text="Add an answer:" TextWrapping="Wrap"/>
+                    <Button Click="QuizComplete"  Height="60" Width="60" VerticalAlignment="Bottom" Padding="0" BorderThickness="0" Margin="30,30,0,0">
+                        <Grid>
+                            <Image Source="../../Assets/button_yellow_bg.png" Stretch="UniformToFill"/>
+                        <FontIcon Foreground="White"  FontFamily="Segoe MDL2 Assets" Glyph="&#xE8FB;" FontSize="30" FontWeight="ExtraBold" />
+                    </Grid>
+                    </Button>
                 </StackPanel>
-            </StackPanel>
+                                -->
+            </RelativePanel>
             <ListView Background="SlateGray"  Opacity="0.7" HorizontalAlignment="Right" Margin="0,30,30,0" Height="300" VerticalAlignment="Top" Width="339"/>
-
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Height="50" Margin="0,0,30,30" HorizontalAlignment="Right">
-
-                <Button Click="Clicked_Back" Height="30" Width="60" VerticalAlignment="Bottom" Padding="0" BorderThickness="0" Margin="20,0,0,0">
-                    <Grid>
-                        <Image Source="../../Assets/button_grey_bg.png" Stretch="UniformToFill"/>
-                        <TextBlock
-                            Text="Back" FontFamily="{StaticResource DefaultFont}" FontWeight="Bold"
-                            Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10"/>
-                    </Grid>
-                </Button>
-                <Button Click="Clicked_Next" Height="30" Width="100" VerticalAlignment="Bottom" Padding="0" BorderThickness="0" Margin="20,0,0,0">
-                    <Grid>
-                        <Image Source="../../Assets/button_green_bg.png" Stretch="UniformToFill"/>
-                        <TextBlock
-                                Text="Next" FontFamily="{StaticResource DefaultFont}" FontWeight="Bold"
-                                Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10"/>
-                    </Grid>
-                </Button>
-            </StackPanel>
         </Grid>
     </Grid>
 </Page>
