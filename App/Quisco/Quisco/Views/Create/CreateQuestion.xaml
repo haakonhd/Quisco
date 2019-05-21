@@ -27,11 +27,11 @@
             <RelativePanel x:Name="LeftHalfRelativePanel" Margin="40,0,0,0" Width="600" HorizontalAlignment="Left">
                 <TextBlock
                     x:Name="QuizNameHeader" FontFamily="{StaticResource DefaultFont}"  FontSize="40" FontWeight="Bold"
-                    Margin="-20,20,0,0" Text="Create Quiz" TextWrapping="Wrap"/>
+                    Margin="-20,20,0,0" Text="{x:Bind quizName}" TextWrapping="Wrap"/>
                 
                 <TextBlock
                    x:Name="QuestionNumberTextBlock" FontFamily="{StaticResource DefaultFont}" RelativePanel.Below="QuizNameHeader" FontSize="20" FontWeight="Bold"
-                   Margin="0,30,0,0" Text="Question 1:" TextWrapping="Wrap" />
+                   Margin="0,30,0,0" Text="{x:Bind questionNumberText}" TextWrapping="Wrap" />
                 <TextBox x:Name="QuestionTextInput" RelativePanel.Below="QuestionNumberTextBlock"
                          Margin="0,20,0,0" PlaceholderText="Enter question here"  Padding="9,9,9,9" Height="80"
                          RelativePanel.AlignLeftWithPanel="true" RelativePanel.AlignRightWithPanel="True" />
@@ -75,7 +75,24 @@
                 <!--
                                 -->
             </RelativePanel>
-            <ListView Background="SlateGray"  Opacity="0.7" HorizontalAlignment="Right" Margin="0,30,30,0" Height="300" VerticalAlignment="Top" Width="339"/>
+            <ListView x:Name="QuestionsListView" Background="SlateGray"  Opacity="0.7" HorizontalAlignment="Right"
+                      IsItemClickEnabled="True" ItemClick="{x:Bind ClickItemList}"
+                      ItemsSource="{x:Bind questionsObservableCollection, Mode=OneWay}"
+                      Margin="0,30,30,0" Height="300" VerticalAlignment="Top" Width="339">
+                <!-- Items="{x:Bind questionsObservableCollection}" -->
+                <ListViewHeaderItem>
+                    <TextBlock Name="Questions" Text="No questions so far"/>
+                </ListViewHeaderItem>
+                <ListView.ItemTemplate>
+                    
+                    <DataTemplate>
+
+                        <TextBlock Text="{Binding QuestionText}"></TextBlock>
+
+                    </DataTemplate>
+
+                </ListView.ItemTemplate>
+            </ListView>
         </Grid>
     </Grid>
 </Page>
