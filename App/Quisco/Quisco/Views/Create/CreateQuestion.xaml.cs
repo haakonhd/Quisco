@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -23,7 +24,10 @@ namespace Quisco.Views
     {
         private Quiz quiz;
         private Question question;
+        private ObservableCollection<Question> questionsObservableCollection = new ObservableCollection<Question>();
         static Uri quizzesBaseUri = new Uri("http://localhost:53710/api/Quizzes");
+        private string quizName;
+        private string questionNumberText;
 
         HttpClient httpClient = new HttpClient();
 
@@ -38,8 +42,8 @@ namespace Quisco.Views
             quiz = (Quiz)e.Parameter; // get parameter from last view
             if (quiz != null)
             {
-                QuizNameHeader.Text = quiz.QuizName;
-                QuestionNumberTextBlock.Text = "Question " + quiz.QuestionToBeHandled;
+                BuildViews();
+                
                 FillInputs();
             }
         }
@@ -56,7 +60,7 @@ namespace Quisco.Views
                 foreach (TextBox answerTextBox in AnswerGrid.Children)
                 {
                     var answer = question.Answers.ElementAtOrDefault(i);
-                    if (answer != null) answerTextBox.Text = answer;
+                    if (!string.IsNullOrEmpty(answer)) answerTextBox.Text = answer;
                     i++;
                 }
             }
@@ -90,7 +94,9 @@ namespace Quisco.Views
 
             if (newQuestion) quiz.Questions.Add(question);
             else quiz.Questions[quiz.QuestionToBeHandled - 1] = question;
-            int i = 0;
+
+            quiz.QuestionToBeHandled++;
+            Frame.Navigate(typeof(CreateQuestion), quiz);
         }
 
 
@@ -103,6 +109,23 @@ namespace Quisco.Views
             if (Answer4Input.Text.Length < 1 && Answer3Input.Text.Length > 1) return false;
 
             return true;
+        }
+
+        private void BuildViews()
+        {
+            quizName = quiz.QuizName;
+            questionNumberText = "Question " + quiz.QuestionToBeHandled;
+            foreach (Question q in quiz.Questions)  questionsObservableCollection.Add(q);
+        }
+
+        public async void ClickItemList(object sender, ItemClickEventArgs e)
+        {
+            var clickedQuestion = (Question)e.ClickedItem;
+            int n = QuestionsListView.SelectedIndex;
+            quiz.QuestionToBeHandled = n;
+            var dialog = new MessageDialog(n.ToString());
+            await dialog.ShowAsync();
+//            Frame.Navigate(typeof(CreateQuizCategory), quiz);
         }
 
         private void GoBack(object sender, RoutedEventArgs e)
