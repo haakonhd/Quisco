@@ -13,6 +13,8 @@ namespace Quisco.Model
 		[Required]
 		[StringLength(500)]
 		public string QuestionText { get; set; }
+		[NotMapped]
+		public int QuestionNumber { get; set; }
 
 		public IList<string> Answers { get; set;  } = new List<string>();
 

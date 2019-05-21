@@ -24,7 +24,7 @@ namespace Quisco.Views
     /// </summary>
     public sealed partial class CreateQuizCategory : Page
     {
-        private Quiz quiz;
+        private QuizParams quizParams;
 
         public string[] QuizCategories =
         {
@@ -32,7 +32,8 @@ namespace Quisco.Views
             "Geography",
             "Movies",
             "Celebrities",
-            "Music"
+            "Music",
+            "Other"
         };
         public CreateQuizCategory()
         {
@@ -52,22 +53,18 @@ namespace Quisco.Views
                 //TODO: Handle error: no category selected
             }
 
-            quiz.QuizCategory = quizCategory;
-            //set questionToBeHandled to 1 for the first time.
-            //If the user has clicked "back" from CreateQuestion it will have a set value and is not to be edited
-            if(quiz.QuestionToBeHandled == 0)
-                quiz.QuestionToBeHandled = 1;
-            this.Frame.Navigate(typeof(CreateQuestion), quiz);
+            quizParams.Quiz.QuizCategory = quizCategory;
+            this.Frame.Navigate(typeof(CreateQuestion), quizParams);
         }
         private void Clicked_Back(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(CreateQuizNamePage), quiz);
+            this.Frame.Navigate(typeof(CreateQuizNamePage), quizParams);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            quiz = (Quiz)e.Parameter; // get parameter
+            quizParams = (QuizParams)e.Parameter; // get parameter
         }
 
     }

@@ -30,7 +30,7 @@
                 <TextBlock x:Name="EnterQuizNameTextBlock"
                    FontFamily="{StaticResource DefaultFont}" HorizontalAlignment="Left" FontSize="20" FontWeight="Bold"
                    Margin="20,30,0,0" Text="Enter quiz name:" TextWrapping="Wrap"/>
-                <TextBox x:Name="CreateQuizName" Text="{x:Bind QuizName}" HorizontalAlignment="Left" Margin="20,20,0,0" PlaceholderText="Quiz name"  Padding="9,9,9,9" Width="500"/>
+                <TextBox x:Name="CreateQuizName" Text="{x:Bind quizName}" HorizontalAlignment="Left" Margin="20,20,0,0" PlaceholderText="Quiz name"  Padding="9,9,9,9" Width="500"/>
 
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,0,30,30" HorizontalAlignment="Right">

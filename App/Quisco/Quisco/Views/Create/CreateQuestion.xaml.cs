@@ -24,10 +24,12 @@ namespace Quisco.Views
     {
         private Quiz quiz;
         private Question question;
+        private QuizParams quizParams;
+        private int questionToHandle;
+        private string questionNumberText;
         private ObservableCollection<Question> questionsObservableCollection = new ObservableCollection<Question>();
         static Uri quizzesBaseUri = new Uri("http://localhost:53710/api/Quizzes");
         private string quizName;
-        private string questionNumberText;
 
         HttpClient httpClient = new HttpClient();
 
@@ -39,7 +41,9 @@ namespace Quisco.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            quiz = (Quiz)e.Parameter; // get parameter from last view
+            quizParams = (QuizParams)e.Parameter; // get parameter from last view
+            quiz = quizParams.Quiz;
+            questionToHandle = quizParams.QuestionToHandle;
             if (quiz != null)
             {
                 BuildViews();
@@ -50,7 +54,7 @@ namespace Quisco.Views
 
         private void FillInputs()
         {
-            question = quiz.Questions.ElementAtOrDefault(quiz.QuestionToBeHandled - 1);
+            question = quiz.Questions.ElementAtOrDefault(questionToHandle - 1);
             // question to be handled has already been created
             if (question != null)
             {
@@ -70,33 +74,33 @@ namespace Quisco.Views
         {
             bool newQuestion;
             // if creating a new question, the value will be null
-            question = quiz.Questions.ElementAtOrDefault(quiz.QuestionToBeHandled - 1);
+            question = quiz.Questions.ElementAtOrDefault(questionToHandle - 1);
             if (question == null)
             {
                 question = new Question();
                 newQuestion = true;
             }
-            else
-                newQuestion = false;
+            else newQuestion = false;
 
             if (InputsAreValid())
             {
                 question.QuestionText = QuestionTextInput.Text;
-
+                question.QuestionNumber = questionToHandle;
                 question.Answers.Clear();
                 foreach (TextBox answerTextBox in AnswerGrid.Children)
                     question.Answers.Add(answerTextBox.Text);
             }
             else
             {
+                return;
                 //TODO: handle error: inputs not valid
             }
 
             if (newQuestion) quiz.Questions.Add(question);
-            else quiz.Questions[quiz.QuestionToBeHandled - 1] = question;
+            else quiz.Questions[questionToHandle - 1] = question;
 
-            quiz.QuestionToBeHandled++;
-            Frame.Navigate(typeof(CreateQuestion), quiz);
+            quizParams.QuestionToHandle++;
+            Frame.Navigate(typeof(CreateQuestion), quizParams);
         }
 
 
@@ -106,7 +110,7 @@ namespace Quisco.Views
             if (QuestionTextInput.Text.Length < 5) return false;
             if (Answer1Input.Text.Length < 1) return false;
             if (Answer2Input.Text.Length < 1) return false;
-            if (Answer4Input.Text.Length < 1 && Answer3Input.Text.Length > 1) return false;
+            if (Answer4Input.Text.Length > 1 && Answer3Input.Text.Length < 1) return false;
 
             return true;
         }
@@ -114,24 +118,22 @@ namespace Quisco.Views
         private void BuildViews()
         {
             quizName = quiz.QuizName;
-            questionNumberText = "Question " + quiz.QuestionToBeHandled;
+            questionNumberText = "Question " + questionToHandle;
             foreach (Question q in quiz.Questions)  questionsObservableCollection.Add(q);
         }
 
-        public async void ClickItemList(object sender, ItemClickEventArgs e)
+        public void ClickItemList(object sender, ItemClickEventArgs e)
         {
             var clickedQuestion = (Question)e.ClickedItem;
-            int n = QuestionsListView.SelectedIndex;
-            quiz.QuestionToBeHandled = n;
-            var dialog = new MessageDialog(n.ToString());
-            await dialog.ShowAsync();
-//            Frame.Navigate(typeof(CreateQuizCategory), quiz);
+            quizParams.QuestionToHandle = clickedQuestion.QuestionNumber;
+
+            Frame.Navigate(typeof(CreateQuestion), quizParams);
         }
 
         private void GoBack(object sender, RoutedEventArgs e)
         {
             
-            this.Frame.Navigate(typeof(CreateQuizCategory), quiz);
+            this.Frame.Navigate(typeof(CreateQuizCategory), quizParams);
         }
 
         private void QuizComplete(object sender, RoutedEventArgs e)
@@ -152,17 +154,6 @@ namespace Quisco.Views
             await dialog.ShowAsync();
             this.Frame.Navigate(typeof(MainPage));
              */
-        }
-
-        private void AddQuestionToQuiz(Question question, string questionInputText)
-        {
-            if (question == null)
-            {
-                questionInputText = QuestionTextInput.Text;
-                question = new Question(questionInputText);
-                quiz.Questions.Add(question);
-                //TODO: error if no input
-            }
         }
 
     }

@@ -30,7 +30,8 @@ namespace Quisco.Views
         private void Clicked_Create(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             Quiz quiz = new Quiz();
-            this.Frame.Navigate(typeof(CreateQuizNamePage), quiz);
+            QuizParams quizParams = new QuizParams(quiz, 1);
+            this.Frame.Navigate(typeof(CreateQuizNamePage), quizParams);
         }
         private void Clicked_Take(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {

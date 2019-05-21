@@ -18,8 +18,6 @@ namespace Quisco.Model
 		public string QuizName { get; set; }
 		[StringLength(20)]
 		public string QuizCategory { get; set; }
-		[NotMapped]
-		public int QuestionToBeHandled { get; set; }
 		public IList<Question> Questions { get; set; } = new List<Question>();
 
 		public Quiz(){}

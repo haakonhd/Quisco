@@ -10,35 +10,34 @@ namespace Quisco.Views
 {
     public sealed partial class CreateQuizNamePage : Page
     {
-        private Quiz quiz;
-        public CreateQuizNameViewModel ViewModel { get; } = new CreateQuizNameViewModel();
-        public string QuizName = "";
+        private QuizParams quizParams;
+        private string quizName;
 
         public CreateQuizNamePage()
         {
-            QuizName = "";
+            quizName = "";
             InitializeComponent();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            quiz = (Quiz)e.Parameter; // get parameter
-            if(quiz.QuizName != null) QuizName = quiz.QuizName;
+            quizParams = (QuizParams)e.Parameter; // get parameter
+            if(quizParams?.Quiz.QuizName != null) quizName = quizParams.Quiz.QuizName;
         }
 
         private void ClickedBack(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(MainPage));
+            Frame.Navigate(typeof(MainPage));
         }
 
 
         private void ClickedNext(object sender, RoutedEventArgs e)
         {
             string quizName = CreateQuizName.Text;
-            this.quiz.QuizName = quizName;
+            quizParams.Quiz.QuizName = quizName;
 
-            this.Frame.Navigate(typeof(CreateQuizCategory), quiz);
+            this.Frame.Navigate(typeof(CreateQuizCategory), quizParams);
 
         }
 
