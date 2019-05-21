@@ -125,13 +125,13 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
-    <Compile Include="Views\CreateQuestion.xaml.cs">
+    <Compile Include="Views\Create\CreateQuestion.xaml.cs">
       <DependentUpon>CreateQuestion.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CreateQuizCategory.xaml.cs">
+    <Compile Include="Views\Create\CreateQuizCategory.xaml.cs">
       <DependentUpon>CreateQuizCategory.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CreateQuizNamePage.xaml.cs">
+    <Compile Include="Views\Create\CreateQuizNamePage.xaml.cs">
       <DependentUpon>CreateQuizNamePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainPage.xaml.cs">
@@ -171,15 +171,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CreateQuestion.xaml">
+    <Page Include="Views\Create\CreateQuestion.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CreateQuizCategory.xaml">
+    <Page Include="Views\Create\CreateQuizCategory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CreateQuizNamePage.xaml">
+    <Page Include="Views\Create\CreateQuizNamePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
