@@ -8,13 +8,11 @@ namespace Quisco.DataAccess
 	{
 		public DbSet<Quiz> Quizes { get; set; }
 		public DbSet<Question> Questions { get; set; }
-//		public DbSet<QuizQuestion> QuizQuestions { get; set; }
+		public DbSet<Answer> Answers { get; set; }
+
 		public QuiscoContext(DbContextOptions<QuiscoContext> options) : base(options) { }
 
-		public QuiscoContext()
-		{
-			
-		}
+		public QuiscoContext(){}
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
@@ -37,9 +35,14 @@ namespace Quisco.DataAccess
 		}
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			modelBuilder.Entity<Quiz>()
-				.HasMany(quiz => quiz.Questions)
-				.WithOne(question => question.AssociatedQuiz);
+			modelBuilder.Entity<Question>()
+				.HasOne(question => question.BelongingQuiz)
+				.WithMany(quiz => quiz.QuestionsCollection);
+
+			modelBuilder.Entity<Answer>()
+				.HasOne(a => a.BelongingQuestion)
+				.WithMany(question => question.Answers);
+
 		}
 	}
 }

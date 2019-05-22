@@ -64,7 +64,7 @@ namespace Quisco.Views
                 foreach (TextBox answerTextBox in AnswerGrid.Children)
                 {
                     var answer = question.Answers.ElementAtOrDefault(i);
-                    if (!string.IsNullOrEmpty(answer)) answerTextBox.Text = answer;
+                    if (!string.IsNullOrEmpty(answer.AnswerText)) answerTextBox.Text = answer.AnswerText;
                     i++;
                 }
             }
@@ -88,7 +88,7 @@ namespace Quisco.Views
                 question.QuestionNumber = questionToHandle;
                 question.Answers.Clear();
                 foreach (TextBox answerTextBox in AnswerGrid.Children)
-                    question.Answers.Add(answerTextBox.Text);
+                    question.Answers.Add(new Answer(answerTextBox.Text, question));
             }
             else
             {
@@ -133,27 +133,34 @@ namespace Quisco.Views
         private void GoBack(object sender, RoutedEventArgs e)
         {
             
-            this.Frame.Navigate(typeof(CreateQuizCategory), quizParams);
+            Frame.Navigate(typeof(CreateQuizCategory), quizParams);
         }
 
-        private void QuizComplete(object sender, RoutedEventArgs e)
+        private async void QuizComplete(object sender, RoutedEventArgs e)
         {
+            //adds questions from IList to ICollection since IList is not supported by the API
+            foreach (Question q in quiz.Questions)
+            {
+                quiz.QuestionsCollection.Add(q);
+            }
 
-            /*
-            Save quiz in db
-            var json = JsonConvert.SerializeObject(quiz);
+            var json = JsonConvert.SerializeObject(quiz, Formatting.None,
+                new JsonSerializerSettings()
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
 
             var result = await httpClient.PostAsync(quizzesBaseUri, new HttpStringContent(json, Windows.Storage.Streams.UnicodeEncoding.Utf8, "application/json"));
             result = await httpClient.GetAsync(quizzesBaseUri);
 
 
+
             json = await result.Content.ReadAsStringAsync();
             var quizList = JsonConvert.DeserializeObject<Quiz[]>(json);
 
-            var dialog = new MessageDialog(quizList.Last() + " was added to Db. Sadly this is all the app can do for now.", "Quiz added");
+            var dialog = new MessageDialog(quizList.Last() + " was added to Db", "Quiz added");
             await dialog.ShowAsync();
             this.Frame.Navigate(typeof(MainPage));
-             */
         }
 
     }

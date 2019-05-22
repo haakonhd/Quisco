@@ -15,10 +15,11 @@ namespace Quisco.Model
 		public string QuestionText { get; set; }
 		[NotMapped]
 		public int QuestionNumber { get; set; }
-
-		public IList<string> Answers { get; set;  } = new List<string>();
-
-		public Quiz AssociatedQuiz { get; set; }
+		public Quiz BelongingQuiz { get; set; }
+		[NotMapped]
+		public IList<Answer> Answers { get; set;  } = new List<Answer>();
+		[Column("Answers")]
+		public ICollection<Answer> AnswersCollection { get; set;  } = new List<Answer>();
 
 		public Question(){}
 
@@ -27,10 +28,17 @@ namespace Quisco.Model
 			this.QuestionText = questionText;
 		}
 
-		public Question(int questionId, string questionText)
+		public Question(int questionId, string questionText, ICollection<Answer> answersCollection) 
 		{
 			this.QuestionId = questionId;
 			this.QuestionText = questionText;
+			this.AnswersCollection = answersCollection;
+		}
+
+		public Question(string questionText, ICollection<Answer> answersCollection)
+		{
+			this.QuestionText = questionText;
+			this.AnswersCollection = answersCollection;
 		}
 
 		public override string ToString()

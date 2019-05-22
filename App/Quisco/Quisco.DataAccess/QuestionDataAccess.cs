@@ -7,6 +7,8 @@ namespace Quisco.DataAccess
 {
 	public class QuestionDataAccess
 	{
+		/*
+		 *
 		public static void AddQuestionToDb(Question question)
 		{
 			using (var db = new QuiscoContext())
@@ -46,6 +48,7 @@ namespace Quisco.DataAccess
 		{
 			
 		}
+		 */
 
 	}
 }

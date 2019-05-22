@@ -18,7 +18,10 @@ namespace Quisco.Model
 		public string QuizName { get; set; }
 		[StringLength(20)]
 		public string QuizCategory { get; set; }
+		[NotMapped]
 		public IList<Question> Questions { get; set; } = new List<Question>();
+		[Column("Questions")]
+		public ICollection<Question> QuestionsCollection { get; set; } = new List<Question>();
 
 		public Quiz(){}
 
@@ -27,6 +30,19 @@ namespace Quisco.Model
 			QuizName = quizName;
 		}
 
+		public Quiz(int quizId, string quizName, string quizCategory, ICollection<Question> questionsCollection)
+		{
+			this.QuizId = quizId;
+			this.QuizName = quizName;
+			this.QuizCategory = quizCategory;
+			this.QuestionsCollection = questionsCollection;
+		}
+		public Quiz(string quizName, string quizCategory, ICollection<Question> questionsCollection)
+		{
+			this.QuizName = quizName;
+			this.QuizCategory = quizCategory;
+			this.QuestionsCollection = questionsCollection;
+		}
 		public override string ToString()
 		{
 			return this.QuizName;
