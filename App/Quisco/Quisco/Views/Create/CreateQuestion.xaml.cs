@@ -12,6 +12,8 @@ using Quisco.Model;
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Input;
+using Quisco.ViewModels;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -26,15 +28,23 @@ namespace Quisco.Views
         private Question question;
         private QuizParams quizParams;
         private int questionToHandle;
-        private string questionNumberText;
+        private string selectedAnswerNumber;
         private ObservableCollection<Question> questionsObservableCollection = new ObservableCollection<Question>();
-        static Uri quizzesBaseUri = new Uri("http://localhost:53710/api/Quizzes");
-        private string quizName;
 
-        HttpClient httpClient = new HttpClient();
+        //Binding variables
+        private string quizName;
+        private string questionNumberText;
+
+        private string answer1BorderBrush;
+        private string answer2BorderBrush;
+        private string answer3BorderBrush;
+        private string answer4BorderBrush;
+
+        public QuizViewModel ViewModel { get; }
 
         public CreateQuestion()
         {
+            ViewModel = new QuizViewModel();
             this.InitializeComponent();
         }
 
@@ -50,27 +60,47 @@ namespace Quisco.Views
                 
                 FillInputs();
             }
+
+            answer1BorderBrush = "Red";
+            answer2BorderBrush = "Red";
+            answer3BorderBrush = "Red";
+            answer4BorderBrush = "Red";
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            RefreshAnswerInputs();
         }
 
         private void FillInputs()
         {
             question = quiz.Questions.ElementAtOrDefault(questionToHandle - 1);
+
             // question to be handled has already been created
             if (question != null)
             {
                 QuestionTextInput.Text = question.QuestionText;
 
                 var i = 0;
-                foreach (TextBox answerTextBox in AnswerGrid.Children)
+                TextBox answerTextBox = null;
+                foreach (var answerGridChild in AnswerGrid.Children)
                 {
-                    var answer = question.Answers.ElementAtOrDefault(i);
-                    if (!string.IsNullOrEmpty(answer.AnswerText)) answerTextBox.Text = answer.AnswerText;
-                    i++;
+                    if (answerGridChild.GetType() == typeof(TextBox))
+                    {
+                        answerTextBox = (TextBox)answerGridChild;
+                        if (question.Answers.ElementAtOrDefault(i) != null)
+                        {
+                            var answer = question.Answers.ElementAtOrDefault(i);
+                            if (!string.IsNullOrEmpty(answer.AnswerText))   
+                                answerTextBox.Text = answer.AnswerText;
+                        }
+                        i++;
+                    }
                 }
             }
         }
 
-        private void AddQuestion(object sender, RoutedEventArgs e)
+        private  void AddQuestion(object sender, RoutedEventArgs e)
         {
             bool newQuestion;
             // if creating a new question, the value will be null
@@ -87,13 +117,20 @@ namespace Quisco.Views
                 question.QuestionText = QuestionTextInput.Text;
                 question.QuestionNumber = questionToHandle;
                 question.Answers.Clear();
-                foreach (TextBox answerTextBox in AnswerGrid.Children)
-                    question.Answers.Add(new Answer(answerTextBox.Text, question));
+                TextBox answerTextBox = null;
+                foreach (var answerGridChild in AnswerGrid.Children)
+                {
+                    if (answerGridChild.GetType() == typeof(TextBox))
+                    {
+                        answerTextBox = (TextBox)answerGridChild;
+                        if (answerTextBox.IsEnabled && answerTextBox.Text.Length > 0)
+                            question.Answers.Add(new Answer(answerTextBox.Text, question));
+                    }
+                }
             }
             else
             {
                 return;
-                //TODO: handle error: inputs not valid
             }
 
             if (newQuestion) quiz.Questions.Add(question);
@@ -106,14 +143,49 @@ namespace Quisco.Views
 
         private bool InputsAreValid()
         {
-            //TODO: improve this whole function
-            if (QuestionTextInput.Text.Length < 5) return false;
-            if (Answer1Input.Text.Length < 1) return false;
-            if (Answer2Input.Text.Length < 1) return false;
-            if (Answer4Input.Text.Length > 1 && Answer3Input.Text.Length < 1) return false;
+            bool valid;
+            valid = QuestionTextIsValid() && AnswersAreValid() && AnswerIsSelected();
+            if (!valid)
+            {
+                if (!QuestionTextIsValid()) ShowErrorMessageAsync("Error: Question text needs at least 5 characters.");
+                else if (!AnswersAreValid()) ShowErrorMessageAsync("Error: At least 2 answers must be entered.");
+                else ShowErrorMessageAsync("Error: Please select a correct answer.");
+            }
 
+            return valid;
+        }
+
+        private async void ShowErrorMessageAsync(string errorMessage)
+        {
+            MessageDialog dialog = new MessageDialog(errorMessage);
+            await dialog.ShowAsync();
+        }
+        private async void ShowErrorMessageAsync1()
+        {
+            MessageDialog dialog = new MessageDialog("yooo");
+            await dialog.ShowAsync();
+        }
+
+        private bool QuestionTextIsValid()
+        {
+            return QuestionTextInput.Text.Length > 5;
+        }
+
+        private bool AnswersAreValid()
+        {
+            if (Answer2Input.Text.Length < 1) return false;
             return true;
         }
+
+        private bool AnswerIsSelected()
+        {
+            if (RadioButton1.IsChecked == true) return true;
+            if (RadioButton2.IsChecked == true) return true;
+            if (RadioButton3.IsChecked == true) return true;
+            if (RadioButton4.IsChecked == true) return true;
+            return false;
+        }
+
 
         private void BuildViews()
         {
@@ -136,32 +208,112 @@ namespace Quisco.Views
             Frame.Navigate(typeof(CreateQuizCategory), quizParams);
         }
 
-        private async void QuizComplete(object sender, RoutedEventArgs e)
+
+        private void ToggleButton_OnChecked(object sender, RoutedEventArgs e)
         {
-            //adds questions from IList to ICollection since IList is not supported by the API
-            foreach (Question q in quiz.Questions)
-            {
-                quiz.QuestionsCollection.Add(q);
-            }
-
-            var json = JsonConvert.SerializeObject(quiz, Formatting.None,
-                new JsonSerializerSettings()
-                {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                });
-
-            var result = await httpClient.PostAsync(quizzesBaseUri, new HttpStringContent(json, Windows.Storage.Streams.UnicodeEncoding.Utf8, "application/json"));
-            result = await httpClient.GetAsync(quizzesBaseUri);
-
-
-
-            json = await result.Content.ReadAsStringAsync();
-            var quizList = JsonConvert.DeserializeObject<Quiz[]>(json);
-
-            var dialog = new MessageDialog(quizList.Last() + " was added to Db", "Quiz added");
-            await dialog.ShowAsync();
-            this.Frame.Navigate(typeof(MainPage));
+            RefreshTextBoxColors();
         }
 
+        private int GetSelectedAnswer()
+        {
+            if (RadioButton1.IsChecked == true) return 1;
+            if (RadioButton2.IsChecked == true) return 2;
+            if (RadioButton3.IsChecked == true) return 3;
+            if (RadioButton4.IsChecked == true) return 4;
+            return 0;
+        }
+
+        private void RefreshTextBoxColors()
+        {
+            int selectedRadioButton = GetSelectedAnswer();
+            switch (selectedRadioButton)
+            {
+                case 1:
+                    answer1BorderBrush = "Green";
+                    break;
+                case 2:
+                    answer2BorderBrush = "Green";
+                    break;
+                case 3:
+                    answer3BorderBrush = "Green";
+                    break;
+                case 4:
+                    answer4BorderBrush = "Green";
+                    break;
+            }
+        }
+
+        public void RefreshAnswerInputs()
+        {
+            OnAnswer1Changed(null,null);
+            OnAnswer2Changed(null,null);
+            OnAnswer3Changed(null,null);
+            OnAnswer4Changed(null,null);
+        }
+
+        public void OnAnswer1Changed(object sender, RoutedEventArgs e)
+        {
+            // ANSWER 1
+            if (Answer1Input.Text.Length > 0)
+            {
+                Answer2Input.IsEnabled = true;
+                RadioButton1.IsEnabled = true;
+            }
+            else
+            {
+                RadioButton1.IsChecked = false;
+                Answer2Input.IsEnabled = false;
+            }
+            OnAnswer2Changed(null,null);
+        }
+
+        public void OnAnswer2Changed(object sender, RoutedEventArgs e)
+        {
+            // ANSWER 2
+            if (Answer2Input.Text.Length > 0 && Answer2Input.IsEnabled)
+            {
+                Answer3Input.IsEnabled = true;
+                RadioButton2.IsEnabled = true;
+            }
+            else
+            {
+                RadioButton2.IsChecked = false;
+                RadioButton2.IsEnabled = false;
+                Answer3Input.IsEnabled = false;
+            }
+            OnAnswer3Changed(null,null);
+        }
+
+        public void OnAnswer3Changed(object sender, RoutedEventArgs e)
+        {
+            // ANSWER 3
+            if (Answer3Input.Text.Length > 0 && Answer3Input.IsEnabled)
+            {
+                Answer4Input.IsEnabled = true;
+                RadioButton3.IsEnabled = true;
+            }
+            else
+            {
+                RadioButton3.IsChecked = false;
+                RadioButton3.IsEnabled = false;
+                Answer4Input.IsEnabled = false;
+            }
+            OnAnswer4Changed(null,null);
+
+        }
+
+        public void OnAnswer4Changed(object sender, RoutedEventArgs e)
+        {
+            // ANSWER 4
+            if (Answer4Input.Text.Length > 0 && Answer4Input.IsEnabled)
+            {
+                RadioButton4.IsEnabled = true;
+            }
+            else
+            {
+                RadioButton4.IsChecked = false;
+                RadioButton4.IsEnabled = false;
+            }
+        }
     }
 }

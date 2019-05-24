@@ -5,9 +5,9 @@
     xmlns:local="using:Quisco.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-
     Style="{StaticResource PageStyle}"
-    mc:Ignorable="d">
+    mc:Ignorable="d" Loaded="OnLoaded">
+
     <Grid
         Style="{StaticResource ImageStyle}"
         x:Name="ContentArea">
@@ -20,6 +20,7 @@
             Opacity="0.3"
         >
         </Grid>
+        
         <Grid
             HorizontalAlignment="Stretch"
             Margin="60,200,60,60"
@@ -36,20 +37,33 @@
                          Margin="0,20,0,0" PlaceholderText="Enter question here"  Padding="9,9,9,9" Height="80"
                          RelativePanel.AlignLeftWithPanel="true" RelativePanel.AlignRightWithPanel="True" />
                 <Grid x:Name="AnswerGrid" RelativePanel.Below="QuestionTextInput" Margin="0,20,0,0" RelativePanel.AlignLeftWithPanel="true" RelativePanel.AlignRightWithPanel="True"  >
-                <!-- <Grid RelativePanel.Below="QuestionTextInput" Margin="20,20,0,0" > -->
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
+                        <RowDefinition Height="60"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="15"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBox x:Name="Answer1Input" Grid.Row="0" Grid.Column="0" PlaceholderText="Answer 1"  Padding="9,9,9,9" Height="40"/>
-                    <TextBox x:Name="Answer2Input" Grid.Row="0" Grid.Column="1" Margin="20,0,0,0" PlaceholderText="Answer 2"  Padding="9,9,9,9" Height="40"/>
-                    <TextBox x:Name="Answer3Input" Grid.Row="1" Grid.Column="0" Margin="0,20,0,0" PlaceholderText="Answer 3"  Padding="9,9,9,9" Height="40"/>
-                    <TextBox x:Name="Answer4Input" Grid.Row="1" Grid.Column="1" Margin="20,20,0,0" PlaceholderText="Answer 4"  Padding="9,9,9,9" Height="40"/>
-                    
+
+
+                    <RadioButton x:Name="RadioButton1" Grid.Row="0" Grid.Column="0" Checked="ToggleButton_OnChecked" Tag="1" IsEnabled="False" />
+                    <TextBox x:Name="Answer1Input" Grid.Row="0" Grid.Column="1" PlaceholderText="Answer 1"  Padding="9,9,9,9"
+                             Height="40" BorderThickness="2.5"  BorderBrush="{x:Bind answer1BorderBrush}" TextChanged="OnAnswer1Changed"/>
+
+                    <RadioButton x:Name="RadioButton2"  Grid.Row="0" Grid.Column="3" Checked="ToggleButton_OnChecked" Tag="2" IsEnabled="False" />
+                    <TextBox x:Name="Answer2Input" Grid.Row="0" Grid.Column="4" Margin="30,0,0,0" PlaceholderText="Answer 2"
+                             Padding="9,9,9,9" Height="40" BorderThickness="2.5"  BorderBrush="{x:Bind answer2BorderBrush}" IsEnabled="False" TextChanged="OnAnswer2Changed" />
+
+                    <RadioButton x:Name="RadioButton3" Grid.Row="1" Grid.Column="0" Checked="ToggleButton_OnChecked" Tag="3" IsEnabled="False" />
+                    <TextBox x:Name="Answer3Input" Grid.Row="1" Grid.Column="1" PlaceholderText="Answer 3"  Padding="9,9,9,9"
+                             Height="40" BorderThickness="2.5" IsEnabled="False" BorderBrush="{x:Bind answer3BorderBrush}" TextChanged="OnAnswer3Changed"/>
+
+                    <RadioButton x:Name="RadioButton4" Grid.Row="1" Grid.Column="3" Checked="ToggleButton_OnChecked" Tag="4" IsEnabled="False" />   
+                    <TextBox x:Name="Answer4Input" Grid.Row="1" Grid.Column="3" Margin="30,0,0,0" PlaceholderText="Answer 4"
+                             Padding="9,9,9,9" Height="40" BorderThickness="2.5" IsEnabled="False" BorderBrush="{x:Bind answer4BorderBrush}" TextChanged="OnAnswer4Changed"/>
                 </Grid>
                 <StackPanel Orientation="Horizontal" RelativePanel.Below="AnswerGrid" RelativePanel.AlignHorizontalCenterWithPanel="True">
 
@@ -65,24 +79,20 @@
                             <FontIcon Foreground="White"  FontFamily="Segoe MDL2 Assets" Glyph="&#xE710;" FontSize="30" FontWeight="ExtraBold" />
                         </Grid>
                     </Button>
-                    <Button Click="QuizComplete"  Height="60" Width="60" VerticalAlignment="Bottom" Padding="0" BorderThickness="0" Margin="30,30,0,0">
+                    <!-- <Button x:Name="QuizCompleteButton" Command="{x:Bind ViewModel.AddQuizCommand}" CommandParameter="{x:Bind quiz}" -->
+                    <Button x:Name="QuizCompleteButton" Command="{Binding ViewModel.AddQuizCommand}" CommandParameter="{Binding quiz}"
+                        Height="60" Width="60" VerticalAlignment="Bottom" Padding="0" BorderThickness="0" Margin="30,30,0,0">
                         <Grid>
                             <Image Source="../../Assets/button_yellow_bg.png" Stretch="UniformToFill"/>
                         <FontIcon Foreground="White"  FontFamily="Segoe MDL2 Assets" Glyph="&#xE8FB;" FontSize="30" FontWeight="ExtraBold" />
                     </Grid>
                     </Button>
                 </StackPanel>
-                <!--
-                                -->
             </RelativePanel>
             <ListView x:Name="QuestionsListView" Background="SlateGray"  Opacity="0.7" HorizontalAlignment="Right"
                       IsItemClickEnabled="True" ItemClick="{x:Bind ClickItemList}"
                       ItemsSource="{x:Bind questionsObservableCollection, Mode=OneWay}"
                       Margin="0,30,30,0" Height="300" VerticalAlignment="Top" Width="339">
-                <!-- Items="{x:Bind questionsObservableCollection}" -->
-                <ListViewHeaderItem>
-                    <TextBlock Name="Questions" Text="No questions so far"/>
-                </ListViewHeaderItem>
                 <ListView.ItemTemplate>
                     
                     <DataTemplate>

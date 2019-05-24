@@ -1,9 +1,12 @@
-﻿namespace Quisco.Model
+﻿using System;
+
+namespace Quisco.Model
 {
 	public class Answer
 	{
 		public int AnswerId { get; set; }
 		public string AnswerText { get; set; }
+		public Boolean IsCorrect { get; set; }
 		public Question BelongingQuestion { get; set; }
 
 		public Answer(string answerText, Question belongingQuestion)
