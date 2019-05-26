@@ -1,5 +1,4 @@
-﻿using System;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Quisco.ViewModels;
 
 using Windows.UI.Xaml.Controls;
@@ -10,38 +9,21 @@ namespace Quisco.Views
 {
     public sealed partial class CreateQuizNamePage : Page
     {
+        public CreateQuizNameViewModel ViewModel { get; set; }
         private QuizParams quizParams;
-        private string quizName;
 
         public CreateQuizNamePage()
         {
-            quizName = "";
             InitializeComponent();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            base.OnNavigatedTo(e);
             quizParams = (QuizParams)e.Parameter; // get parameter
-            if(quizParams?.Quiz.QuizName != null) quizName = quizParams.Quiz.QuizName;
+//            ViewModel = new CreateQuizNameViewModel();
+            ViewModel = new CreateQuizNameViewModel(quizParams);
+
+            Frame rootFrame = Window.Current.Content as Frame;
         }
-
-        private void ClickedBack(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(MainPage));
-        }
-
-
-        private void ClickedNext(object sender, RoutedEventArgs e)
-        {
-            string quizName = CreateQuizName.Text;
-            quizParams.Quiz.QuizName = quizName;
-
-            this.Frame.Navigate(typeof(CreateQuizCategory), quizParams);
-
-        }
-
-        
-
     }
 }
