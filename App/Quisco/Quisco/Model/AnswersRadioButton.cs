@@ -6,26 +6,26 @@ namespace Quisco.Model
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private bool _isChecked;
+        private bool isChecked;
         public bool IsChecked
         {
-            get { return _isChecked; }
+            get { return isChecked; }
             set
             {
-                _isChecked = value;
+                isChecked = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsChecked)));
 
             }
         }
 
-        public bool _isEnabled;
+        public bool isEnabled;
 
         public bool IsEnabled
         {
-            get { return _isEnabled; }
+            get { return isEnabled; }
             set
             {
-                _isEnabled = value;
+                isEnabled = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsEnabled)));
             }
         }

@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Style="{StaticResource PageStyle}"
-    mc:Ignorable="d" Loaded="OnLoaded">
+    mc:Ignorable="d" Loaded="{x:Bind ViewModel.OnLoaded}">
 
     <Grid
         Style="{StaticResource ImageStyle}"
@@ -27,60 +27,93 @@
             VerticalAlignment="Stretch">
             <RelativePanel x:Name="LeftHalfRelativePanel" Margin="40,0,0,0" Width="600" HorizontalAlignment="Left">
                 <TextBlock
-                    x:Name="QuizNameHeader" FontFamily="{StaticResource DefaultFont}"  FontSize="40" FontWeight="Bold"
-                    Margin="-20,20,0,0" Text="{x:Bind quizName}" TextWrapping="Wrap"/>
+                    x:Name="QuizNameHeader"
+                    Text="{x:Bind ViewModel.QuizNameHeader}" Margin="-20,20,0,0"  TextWrapping="Wrap"
+                    FontFamily="{StaticResource DefaultFont}" FontSize="40" FontWeight="Bold" />
                 
-                <TextBlock
-                   x:Name="QuestionNumberTextBlock" FontFamily="{StaticResource DefaultFont}" RelativePanel.Below="QuizNameHeader" FontSize="20" FontWeight="Bold"
-                   Margin="0,30,0,0" Text="{x:Bind questionNumberText}" TextWrapping="Wrap" />
-                <TextBox x:Name="QuestionTextInput" RelativePanel.Below="QuestionNumberTextBlock"
+                <TextBlock x:Name="QuestionNumberTextBlock"
+                   Text="{x:Bind ViewModel.QuestionNumberText}" RelativePanel.Below="QuizNameHeader" Margin="0,30,0,0"
+                   FontFamily="{StaticResource DefaultFont}" FontWeight="Bold" FontSize="20" TextWrapping="Wrap" />
+                <TextBox x:Name="QuestionTextInput"
+                         Text="{x:Bind ViewModel.QuestionInputText, Mode=TwoWay}" RelativePanel.Below="QuestionNumberTextBlock"
                          Margin="0,20,0,0" PlaceholderText="Enter question here"  Padding="9,9,9,9" Height="80"
                          RelativePanel.AlignLeftWithPanel="true" RelativePanel.AlignRightWithPanel="True" />
-                <Grid x:Name="AnswerGrid" RelativePanel.Below="QuestionTextInput" Margin="0,20,0,0" RelativePanel.AlignLeftWithPanel="true" RelativePanel.AlignRightWithPanel="True"  >
+                <Grid x:Name="AnswerGrid" RelativePanel.Below="QuestionTextInput" Margin="0,20,0,0"
+                      RelativePanel.AlignLeftWithPanel="true" RelativePanel.AlignRightWithPanel="True" >
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="60"/>
+                        <RowDefinition Height="65"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="30"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="15"/>
+                        <ColumnDefinition Width="30"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
+                    <!-- Answer 1 -->
+                    <RadioButton x:Name="RadioButton1"
+                            IsChecked="{Binding Path=RadioButton1.IsChecked, Mode=TwoWay}"
+                            IsEnabled="{Binding Path=RadioButton1.IsEnabled, Mode=TwoWay}" 
+                            Checked="{x:Bind ViewModel.RadioButtonChecked}" Grid.Row="0" Grid.Column="0"  Tag="Answer 1"  />
+                    <TextBox x:Name="Answer1Input" 
+                            IsEnabled="{Binding Path=Answer1InputText.IsEnabled,  Mode=TwoWay}"
+                            Text="{Binding Path=Answer1InputText.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            Grid.Row="0" Grid.Column="1" PlaceholderText="Answer 1"  Padding="9,9,9,9" Height="45" Margin="0,0,10,0"
+                            BorderThickness="2.5"  BorderBrush="{x:Bind ViewModel.Answer1BorderBrush}" TextChanged="{x:Bind ViewModel.OnAnswer1Changed}" />
 
-                    <RadioButton x:Name="RadioButton1" Grid.Row="0" Grid.Column="0" Checked="ToggleButton_OnChecked" Tag="1" IsEnabled="False" />
-                    <TextBox x:Name="Answer1Input" Grid.Row="0" Grid.Column="1" PlaceholderText="Answer 1"  Padding="9,9,9,9"
-                             Height="40" BorderThickness="2.5"  BorderBrush="{x:Bind answer1BorderBrush}" TextChanged="OnAnswer1Changed"/>
+                    <!-- Answer 2 -->
+                    <RadioButton x:Name="RadioButton2"
+                            IsChecked="{Binding Path=RadioButton2.IsChecked, Mode=TwoWay}"
+                            IsEnabled="{Binding Path=RadioButton2.IsEnabled, Mode=TwoWay}"  
+                            Checked="{x:Bind ViewModel.RadioButtonChecked}" Grid.Row="0" Grid.Column="2"  Tag="Answer 2"/>
+                    <TextBox x:Name="Answer2Input"
+                             Text="{Binding Path=Answer2InputText.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding Path=Answer2InputText.IsEnabled, Mode=TwoWay}" 
+                             BorderThickness="2.5" BorderBrush="{x:Bind ViewModel.Answer2BorderBrush}" TextChanged="{x:Bind ViewModel.OnAnswer2Changed}"
+                             Grid.Row="0" Grid.Column="3" Margin="0,0,0,0" PlaceholderText="Answer 2" Padding="9,9,9,9" Height="45" />
 
-                    <RadioButton x:Name="RadioButton2"  Grid.Row="0" Grid.Column="3" Checked="ToggleButton_OnChecked" Tag="2" IsEnabled="False" />
-                    <TextBox x:Name="Answer2Input" Grid.Row="0" Grid.Column="4" Margin="30,0,0,0" PlaceholderText="Answer 2"
-                             Padding="9,9,9,9" Height="40" BorderThickness="2.5"  BorderBrush="{x:Bind answer2BorderBrush}" IsEnabled="False" TextChanged="OnAnswer2Changed" />
+                    <!-- Answer 3 -->
+                    <RadioButton x:Name="RadioButton3"
+                             IsChecked="{Binding Path=RadioButton3.IsChecked, Mode=TwoWay}"
+                             IsEnabled="{Binding Path=RadioButton3.IsEnabled, Mode=TwoWay}"
+                             Checked="{x:Bind ViewModel.RadioButtonChecked}" Grid.Row="1" Grid.Column="0" Tag="Answer 3"/>
+                    <TextBox x:Name="Answer3Input"
+                             Text="{Binding Path=Answer3InputText.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding Path=Answer3InputText.IsEnabled, Mode=TwoWay}" Margin="0,0,10,0"
+                             BorderThickness="2.5" BorderBrush="{x:Bind ViewModel.Answer3BorderBrush}" TextChanged="{x:Bind ViewModel.OnAnswer3Changed}"
+                             Grid.Row="1" Grid.Column="1" PlaceholderText="Answer 3" Padding="9,9,9,9" Height="45"/>
 
-                    <RadioButton x:Name="RadioButton3" Grid.Row="1" Grid.Column="0" Checked="ToggleButton_OnChecked" Tag="3" IsEnabled="False" />
-                    <TextBox x:Name="Answer3Input" Grid.Row="1" Grid.Column="1" PlaceholderText="Answer 3"  Padding="9,9,9,9"
-                             Height="40" BorderThickness="2.5" IsEnabled="False" BorderBrush="{x:Bind answer3BorderBrush}" TextChanged="OnAnswer3Changed"/>
-
-                    <RadioButton x:Name="RadioButton4" Grid.Row="1" Grid.Column="3" Checked="ToggleButton_OnChecked" Tag="4" IsEnabled="False" />   
-                    <TextBox x:Name="Answer4Input" Grid.Row="1" Grid.Column="3" Margin="30,0,0,0" PlaceholderText="Answer 4"
-                             Padding="9,9,9,9" Height="40" BorderThickness="2.5" IsEnabled="False" BorderBrush="{x:Bind answer4BorderBrush}" TextChanged="OnAnswer4Changed"/>
+                    <!-- Answer 4 -->
+                    <RadioButton x:Name="RadioButton4"
+                                 IsChecked="{Binding Path=RadioButton4.IsChecked, Mode=TwoWay}"
+                                 IsEnabled="{Binding Path=RadioButton4.IsEnabled, Mode=TwoWay}"
+                                 Checked="{x:Bind ViewModel.RadioButtonChecked}" Grid.Row="1" Grid.Column="2" Tag="Answer 4"/>
+                    <TextBox x:Name="Answer4Input"
+                             Text="{Binding Path=Answer4InputText.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding Path=Answer4InputText.IsEnabled, Mode=TwoWay}"
+                             BorderThickness="2.5" BorderBrush="{x:Bind ViewModel.Answer4BorderBrush}" TextChanged="{x:Bind ViewModel.OnAnswer4Changed}"
+                             Grid.Row="1" Grid.Column="3" Margin="0,0,0,0" PlaceholderText="Answer 4" Padding="9,9,9,9" Height="45" />
                 </Grid>
+
                 <StackPanel Orientation="Horizontal" RelativePanel.Below="AnswerGrid" RelativePanel.AlignHorizontalCenterWithPanel="True">
 
-                    <Button Click="GoBack"  Height="60" Width="60" VerticalAlignment="Bottom" Padding="0" BorderThickness="0">
+                    <Button Click="{x:Bind ViewModel.GoBack}"
+                            Height="60" Width="60" VerticalAlignment="Bottom" Padding="0" BorderThickness="0">
                     <Grid>
                         <Image Source="../../Assets/button_grey_bg.png" Stretch="UniformToFill"/>
                         <FontIcon Foreground="White"  FontFamily="Segoe MDL2 Assets" Glyph="&#xE72B;" FontSize="30" FontWeight="ExtraBold" />
                     </Grid>
                     </Button>
-                    <Button Click="AddQuestion" Height="60" Width="60" VerticalAlignment="Bottom" Padding="0" BorderThickness="0" Margin="30,30,0,0">
+                    <Button Click="{x:Bind ViewModel.AddQuestion}"
+                            Height="60" Width="60" VerticalAlignment="Bottom" Padding="0" BorderThickness="0" Margin="30,30,0,0">
                         <Grid>
                             <Image Source="../../Assets/button_green_bg.png" Stretch="UniformToFill"/>
                             <FontIcon Foreground="White"  FontFamily="Segoe MDL2 Assets" Glyph="&#xE710;" FontSize="30" FontWeight="ExtraBold" />
                         </Grid>
                     </Button>
-                    <!-- <Button x:Name="QuizCompleteButton" Command="{x:Bind ViewModel.AddQuizCommand}" CommandParameter="{x:Bind quiz}" -->
-                    <Button x:Name="QuizCompleteButton" Command="{Binding ViewModel.AddQuizCommand}" CommandParameter="{Binding quiz}"
+                    <!-- <Button Command="{Binding ViewModel.AddQuizCommand}" CommandParameter="{Binding quiz}" -->
+                    <Button Click="{x:Bind ViewModel.AddQuiz}"
                         Height="60" Width="60" VerticalAlignment="Bottom" Padding="0" BorderThickness="0" Margin="30,30,0,0">
                         <Grid>
                             <Image Source="../../Assets/button_yellow_bg.png" Stretch="UniformToFill"/>
@@ -89,9 +122,12 @@
                     </Button>
                 </StackPanel>
             </RelativePanel>
-            <ListView x:Name="QuestionsListView" Background="SlateGray"  Opacity="0.7" HorizontalAlignment="Right"
-                      IsItemClickEnabled="True" ItemClick="{x:Bind ClickItemList}"
-                      ItemsSource="{x:Bind questionsObservableCollection, Mode=OneWay}"
+
+
+            <ListView x:Name="QuestionsListView"
+                      Background="SlateGray"  Opacity="0.7" HorizontalAlignment="Right"
+                      IsItemClickEnabled="True" ItemClick="{x:Bind ViewModel.ClickedItem}"
+                      ItemsSource="{x:Bind ViewModel.QuestionsObservableCollection, Mode=OneWay}"
                       Margin="0,30,30,0" Height="300" VerticalAlignment="Top" Width="339">
                 <ListView.ItemTemplate>
                     

@@ -15,6 +15,7 @@ namespace Quisco.Model
 		public string QuestionText { get; set; }
 		[NotMapped]
 		public int QuestionNumber { get; set; }
+		public Answer CorrectAnswer { get; set; }
 		public Quiz BelongingQuiz { get; set; }
 		[NotMapped]
 		public IList<Answer> Answers { get; set;  } = new List<Answer>();

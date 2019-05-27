@@ -18,40 +18,41 @@
             Background="LightGray"
             Opacity="0.3"
         />
-        <Grid
-            HorizontalAlignment="Stretch"
-            Margin="60,200,60,60"
-            VerticalAlignment="Stretch">
+        <RelativePanel x:Name="MainRelativePanel"  Margin="80,200,60,60">
 
-            <StackPanel Orientation="Vertical" Margin="20,0,0,0">
-                <TextBlock
-                    FontFamily="{StaticResource DefaultFont}" HorizontalAlignment="Left" FontSize="40" FontWeight="Bold"
-                    Margin="0,20,0,0" Text="Create Quiz" TextWrapping="Wrap"/>
-                <TextBlock
-                   FontFamily="{StaticResource DefaultFont}" HorizontalAlignment="Left" FontSize="20" FontWeight="Bold"
-                   Margin="20,30,0,0" Text="Select quiz category:" TextWrapping="Wrap"/>
-                <ComboBox x:Name="QuizCategoryComboBox" Margin="20,30,0,0" Height="50" Width="250" PlaceholderText="Category"/>
+            <TextBlock  x:Name="CreateQuizHeader"
+                Text="{x:Bind ViewModel.HeaderText.Text}" 
+                FontFamily="{StaticResource DefaultFont}" FontSize="40" FontWeight="Bold"
+                Margin="0,20,0,0" TextWrapping="Wrap" RelativePanel.AlignTopWithPanel="True"/>
+            <TextBlock x:Name="EnterQuizCategory"
+                RelativePanel.Below="CreateQuizHeader"
+                FontFamily="{StaticResource DefaultFont}" FontSize="20" FontWeight="Bold"
+                Margin="20,30,0,0" Text="Select category:" TextWrapping="Wrap"/>
+            <ComboBox x:Name="QuizCategoryComboBox"
+                RelativePanel.Below="EnterQuizCategory"
+                ItemsSource="{x:Bind ViewModel.QuizCategories}"
+                SelectedItem="{x:Bind ViewModel.SelectedItem, Mode=TwoWay}"
+                Margin="20,30,0,0" Height="50" Width="250" PlaceholderText="Category" />
 
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,0,30,30" HorizontalAlignment="Right">
-
-                <Button Click="Clicked_Back" Height="30" Width="60" VerticalAlignment="Bottom" Padding="0" BorderThickness="0" Margin="20,0,0,0">
+            <StackPanel Orientation="Horizontal" Margin="0,0,30,30" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                <Button Click="{x:Bind ViewModel.ClickedBack}" Height="40" Width="80" VerticalAlignment="Bottom" Padding="0" BorderThickness="0" Margin="20,0,0,0">
                     <Grid>
                         <Image Source="../../Assets/button_grey_bg.png" Stretch="UniformToFill"/>
                         <TextBlock
-                            Text="Back" FontFamily="{StaticResource DefaultFont}" FontWeight="Bold"
+                            Text="Back" FontFamily="{StaticResource DefaultFont}" FontWeight="Bold" FontSize="17"
                             Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10"/>
                     </Grid>
                 </Button>
-                <Button Click="Clicked_Next" Height="30" Width="100" VerticalAlignment="Bottom" Padding="0" BorderThickness="0" Margin="20,0,0,0">
+                <Button Click="{x:Bind ViewModel.ClickedNext}"
+                    Height="40" Width="120" VerticalAlignment="Bottom" Padding="0" BorderThickness="0" Margin="20,0,0,0">
                     <Grid>
                         <Image Source="../../Assets/button_green_bg.png" Stretch="UniformToFill"/>
                         <TextBlock
-                                Text="Next" FontFamily="{StaticResource DefaultFont}" FontWeight="Bold"
-                                Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10"/>
+                                Text="Next" FontFamily="{StaticResource DefaultFont}" FontWeight="Bold" FontSize="17"
+                                Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0"/>
                     </Grid>
                 </Button>
             </StackPanel>
-        </Grid>
+        </RelativePanel>
     </Grid>
 </Page>

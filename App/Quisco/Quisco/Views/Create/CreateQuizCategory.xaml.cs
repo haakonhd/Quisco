@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Quisco.Model;
+using Quisco.ViewModels;
 using Quisco.Views;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -25,47 +26,22 @@ namespace Quisco.Views
     /// </summary>
     public sealed partial class CreateQuizCategory : Page
     {
+        public CreateQuizCategoryViewModel ViewModel { get; set; }
         private QuizParams quizParams;
 
-        public string[] QuizCategories =
-        {
-            "History",
-            "Geography",
-            "Movies",
-            "Celebrities",
-            "Music",
-            "Other"
-        };
         public CreateQuizCategory()
         {
+//            ListView sss = new ListView();
+//            Object w = sss.SelectedItem;
             this.InitializeComponent();
-            QuizCategoryComboBox.ItemsSource = QuizCategories;
-        }
-
-        private void Clicked_Next(object sender, RoutedEventArgs e)
-        {
-            string quizCategory = "";
-            try
-            {
-                quizCategory = QuizCategoryComboBox.SelectedItem.ToString();
-            }
-            catch (NullReferenceException)
-            {
-                //TODO: Handle error: no category selected
-            }
-
-            quizParams.Quiz.QuizCategory = quizCategory;
-            this.Frame.Navigate(typeof(CreateQuestion), quizParams);
-        }
-        private void Clicked_Back(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(CreateQuizNamePage), quizParams);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            base.OnNavigatedTo(e);
             quizParams = (QuizParams)e.Parameter; // get parameter
+            ViewModel = new CreateQuizCategoryViewModel(quizParams);
+
+            Frame rootFrame = Window.Current.Content as Frame;
         }
 
     }

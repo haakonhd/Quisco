@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 
 namespace Quisco.Model
 {
@@ -6,27 +7,28 @@ namespace Quisco.Model
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private string _text;
+        private string text;
         public string Text
         {
-            get { return _text; }
+            get { return text; }
             set
             {
-                _text = value;
+                text = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Text)));
             }
         }
 
-        public bool _isEnabled;
+        public bool isEnabled;
 
         public bool IsEnabled
         {
-            get { return _isEnabled; }
+            get { return isEnabled; }
             set
             {
-                _isEnabled = value;
+                isEnabled = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsEnabled)));
             }
         }
+
     }
 }

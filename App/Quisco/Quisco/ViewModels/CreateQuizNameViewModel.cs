@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Navigation;
 using Quisco.Helpers;
 using Quisco.Model;
 using Quisco.Services;
@@ -20,32 +19,28 @@ namespace Quisco.ViewModels
             quiz = quizParams.Quiz;
             questionToHandle = quizParams.QuestionToHandle;
             if(quiz.QuizName != null)
-                QuestionInputText.Text = quiz.QuizName;
+                QuestionInputText = quiz.QuizName;
         }
 
 
 
-        private InputText questionInputText = new InputText();
-        public InputText QuestionInputText
+        private string questionInputText;
+        public string QuestionInputText
         {
-            get { return questionInputText; }
-            set
-            {
-                this.SetProperty(ref questionInputText, value);
-//                currentQuizText = value;
-            }
+            get => questionInputText;
+            set => this.SetProperty(ref questionInputText, value);
         }
 
-        private void ClickedBack(object sender, RoutedEventArgs e)
+        public void ClickedBack(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(typeof(CreateQuestion), quizParams);
+            NavigationService.Navigate(typeof(MainPage));
         }
 
         public void ClickedNext(object sender, RoutedEventArgs e)
         {
-            string quizName = QuestionInputText.Text;
+            string quizName = QuestionInputText;
             quizParams.Quiz.QuizName = quizName;
-            NavigationService.Navigate(typeof(CreateQuestion), quizParams);
+            NavigationService.Navigate(typeof(CreateQuizCategory), quizParams);
 
         }
     }

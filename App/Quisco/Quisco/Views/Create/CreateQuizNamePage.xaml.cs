@@ -20,7 +20,6 @@ namespace Quisco.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             quizParams = (QuizParams)e.Parameter; // get parameter
-//            ViewModel = new CreateQuizNameViewModel();
             ViewModel = new CreateQuizNameViewModel(quizParams);
 
             Frame rootFrame = Window.Current.Content as Frame;

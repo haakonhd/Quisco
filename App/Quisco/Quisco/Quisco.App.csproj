@@ -121,13 +121,15 @@
     <Compile Include="Helpers\SettingsStorageExtensions.cs" />
     <Compile Include="Model\AnswersRadioButton.cs" />
     <Compile Include="Model\InputText.cs" />
+    <Compile Include="Model\QuizParams.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="Activation\DefaultLaunchActivationHandler.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\ThemeSelectorService.cs" />
+    <Compile Include="ViewModels\CreateQuizCategoryViewModel.cs" />
     <Compile Include="ViewModels\CreateQuizNameViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\QuizViewModel.cs" />
+    <Compile Include="ViewModels\CreateQuestionViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Views\Create\CreateQuestion.xaml.cs">

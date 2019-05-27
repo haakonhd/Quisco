@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Quisco.DataAccess;
 
 namespace Quisco.DataAccess.Migrations
 {
     [DbContext(typeof(QuiscoContext))]
-    partial class QuiscoContextModelSnapshot : ModelSnapshot
+    [Migration("20190527212247_added_correct_answer")]
+    partial class added_correct_answer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -35,6 +35,7 @@ namespace Quisco.Views
         {
             Quiz quiz = new Quiz();
             QuizParams quizParams = new QuizParams(quiz, 1);
+
             this.Frame.Navigate(typeof(CreateQuizNamePage), quizParams);
         }
 
@@ -58,6 +59,7 @@ namespace Quisco.Views
 
         public async void FillQuizList()
         {
+            //TODO: errorhandling no internet
             var quizList = await GetQuizList().ConfigureAwait(true);
             // inserts quizzes to the listView with the newest first
             foreach(var quiz in quizList)

@@ -17,7 +17,7 @@
             Background="LightGray"
             Opacity="0.3"
             />
-        <RelativePanel x:Name="MainRelativePanel"  Margin="60,200,60,60">
+        <RelativePanel x:Name="MainRelativePanel"  Margin="80,200,60,60">
 
             <TextBlock  x:Name="CreateQuizHeader"
                 FontFamily="{StaticResource DefaultFont}" FontSize="40" FontWeight="Bold"
@@ -27,11 +27,11 @@
                 FontFamily="{StaticResource DefaultFont}" FontSize="20" FontWeight="Bold"
                 Margin="20,30,0,0" Text="Enter quiz name:" TextWrapping="Wrap"/>
             <TextBox x:Name="CreateQuizName"
-                Text="{x:Bind ViewModel.QuestionInputText.Text, Mode=TwoWay}" RelativePanel.Below="EnterQuizNameTextBlock"
+                Text="{x:Bind ViewModel.QuestionInputText, Mode=TwoWay}" RelativePanel.Below="EnterQuizNameTextBlock"
                 Margin="20,20,0,0" PlaceholderText="Quiz name"  Padding="9,9,9,9" Width="500"/>
 
             <StackPanel Orientation="Horizontal" Margin="0,0,30,30" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True">
-                <Button Click="{x:Bind ViewModel.ClickedNext}" Height="40" Width="80" VerticalAlignment="Bottom" Padding="0" BorderThickness="0" Margin="20,0,0,0">
+                <Button Click="{x:Bind ViewModel.ClickedBack}" Height="40" Width="80" VerticalAlignment="Bottom" Padding="0" BorderThickness="0" Margin="20,0,0,0">
                     <Grid>
                         <Image Source="../../Assets/button_grey_bg.png" Stretch="UniformToFill"/>
                         <TextBlock
